@@ -8,9 +8,11 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(Rigidbody))]
 public class Movement : MonoBehaviour
 {
+    private MenuManager cheese;
     private Move actions;
     private InputAction move;
     private InputAction jump;
+    private InputAction exit;
 
 
     private Rigidbody rb;
@@ -22,6 +24,7 @@ public class Movement : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        cheese = new MenuManager();
         actions = new Move();
     }
     private void OnEnable()
@@ -31,6 +34,9 @@ public class Movement : MonoBehaviour
         jump = actions.Player.Jump;
         jump.performed += Jumped;
         jump.Enable();
+        exit = actions.Player.Exit;
+        exit.performed += Exit;
+        exit.Enable();
     }
     private void OnDisable()
     {
@@ -50,5 +56,8 @@ public class Movement : MonoBehaviour
     {
         Debug.Log("bu");
         rb.AddForce(transform.up * 250f, ForceMode.Impulse);
+    }
+    private void Exit(InputAction.CallbackContext context){
+        cheese.LoadScene();
     }
 }
